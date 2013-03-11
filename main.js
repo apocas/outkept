@@ -16,12 +16,13 @@ function main(passphrase) {
   var s1 = new Server(conf);
 
   s1.on("ready", function () {
-    this.send("hostname; uptime");
+    //this.send("hostname; uptime");
+    s1.loadSensors();
   });
 
   s1.connect();
 
-
+  /*
   conf.host = 'beta.ptisp.pt';
   var s2 = new Server(conf);
 
@@ -30,6 +31,7 @@ function main(passphrase) {
   });
 
   s2.connect();
+  */
 }
 
 var schema = {
