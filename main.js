@@ -1,37 +1,15 @@
 var Server = require(__dirname + '/lib/server'),
   path = require('path'),
   config = require(__dirname + '/conf/config'),
+  config = require(__dirname + '/lib/outkept'),
   prompt = require('prompt');
 
 function main(passphrase) {
-  var conf = {
-    port: 22,
-    username: config.crawler_user,
-    passphrase: passphrase,
-    privateKey: require('fs').readFileSync(config.crawler_key)
-  };
+  var outk = new Outkept(passphrase);
 
-
-  conf.host = 'abru.pt';
-  var s1 = new Server(conf);
-
-  s1.on("ready", function () {
-    //this.send("hostname; uptime");
-    s1.loadSensors();
-  });
-
-  s1.connect();
-
-  /*
-  conf.host = 'beta.ptisp.pt';
-  var s2 = new Server(conf);
-
-  s2.on("ready", function () {
-    this.send("hostname; uptime");
-  });
-
-  s2.connect();
-  */
+  outk.addServer('abru.pt', 22);
+  outk.addServer('beta.ptisp.pt', 22);
+  outk.addServer('sadfasdfasfaf.com', 22);
 }
 
 var schema = {

@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "dependencies": {
     "ssh2": "*",
-    "prompt": "*"
+    "prompt": "*",
+    "process": "*"
   }
 }
