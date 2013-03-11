@@ -1,7 +1,7 @@
 var Server = require(__dirname + '/lib/server'),
   path = require('path'),
   config = require(__dirname + '/conf/config'),
-  config = require(__dirname + '/lib/outkept'),
+  Outkept = require(__dirname + '/lib/outkept'),
   prompt = require('prompt');
 
 function main(passphrase) {
