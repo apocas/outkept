@@ -1,4 +1,4 @@
-outkept
+Outkept - http://outke.pt
 =======
 
 Outkept is being rewritten in full node.JS.
