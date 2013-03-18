@@ -5,6 +5,9 @@
   "dependencies": {
     "ssh2": "*",
     "prompt": "*",
-    "process": "*"
+    "process": "*",
+    "emailjs": "*",
+    "lynx": "*",
+    "ntwitter": "*"
   }
 }
