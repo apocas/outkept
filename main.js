@@ -3,11 +3,6 @@ var Outkept = require(__dirname + '/lib/outkept'),
 
 function main(passphrase) {
   var outk = new Outkept(passphrase);
-
-  outk.addServer('abru.pt', 22);
-  outk.addServer('beta.ptisp.pt', 22);
-  outk.addServer('sadfasdfasfaf.com', 22);
-
   outk.crawl();
 }
 
