@@ -8,6 +8,8 @@
     "process": "*",
     "emailjs": "*",
     "lynx": "*",
-    "ntwitter": "*"
+    "ntwitter": "*",
+    "express": "*",
+    "passport": "*"
   }
 }
