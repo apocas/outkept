@@ -9,6 +9,7 @@
     "emailjs": "*",
     "lynx": "*",
     "ntwitter": "*",
-    "ecstatic": "*"
+    "ecstatic": "*",
+    "socket.io": "*"
   }
 }
