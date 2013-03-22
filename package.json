@@ -9,7 +9,6 @@
     "emailjs": "*",
     "lynx": "*",
     "ntwitter": "*",
-    "express": "*",
-    "passport": "*"
+    "ecstatic": "*"
   }
 }
