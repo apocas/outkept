@@ -10,6 +10,8 @@
     "lynx": "*",
     "ntwitter": "*",
     "ecstatic": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "hiredis": "*",
+    "redis": "*"
   }
 }
