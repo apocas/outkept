@@ -12,6 +12,8 @@
     "ecstatic": "*",
     "socket.io": "*",
     "hiredis": "*",
-    "redis": "*"
+    "redis": "*",
+    "feedparser": "*",
+    "request": "*"
   }
 }

@@ -23,7 +23,7 @@ var Outkept = function () {
       minSpotColor: '#FA5833',//The CSS colour of the marker displayed for the mimum value. Set to false or an empty string to hide it
       spotRadius: 2,//Radius of all spot markers, In pixels (default: 1.5) - Integer
       lineWidth: 1,//In pixels (default: 1) - Integer
-      tooltipSuffix: ' requests per sec'
+      tooltipSuffix: ' events per sec'
     });
     self.counter = 0;
   },1000);
