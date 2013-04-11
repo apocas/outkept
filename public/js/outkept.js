@@ -11,6 +11,7 @@ var Outkept = function () {
 
   //this.connection.on('connect', function () {});
 
+  /*
   this.connection.on('servers', function (servers) {
     //console.log(servers);
     self.servers = self.servers.concat(servers);
@@ -19,6 +20,7 @@ var Outkept = function () {
       self.refreshServer(server);
     });
   });
+  */
 
   this.connection.on('authentication', function (result) {
     if(result === true) {
