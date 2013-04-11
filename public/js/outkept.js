@@ -70,7 +70,7 @@ Outkept.prototype.refreshServer = function (server) {
       $('#' + server.id).parent().isotope('reloadItems');
     });
   }
-  $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
+  //$('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
 };
 
 Outkept.prototype.findServer = function (id) {

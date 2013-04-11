@@ -11,6 +11,11 @@ var Server = {
       $("#susers", serverg).html(Server.getSensor(server, 'users').value);
     }
 
+    serverg.removeClass('alarmed');
+    serverg.removeClass('warned');
+    serverg.removeClass('normal');
+    serverg.addClass(server.status);
+
     Server.renderSensors(server, serverg);
 
     return serverg;
@@ -18,21 +23,6 @@ var Server = {
 
   renderSensors: function (server, serverg) {
     for (var i = 0; i < server.sensors.length; i++) {
-
-      if (server.sensors[i].alarmed) {
-        serverg.addClass('alarmed');
-        serverg.removeClass('warned');
-        serverg.removeClass('normal');
-      } else if (server.sensors[i].warned && !serverg.hasClass('alarmed')) {
-        serverg.removeClass('alarmed');
-        serverg.addClass('warned');
-        serverg.removeClass('normal');
-      } else if (!serverg.hasClass('alarmed') && !serverg.hasClass('warned')) {
-        serverg.removeClass('alarmed');
-        serverg.removeClass('warned');
-        serverg.addClass('normal');
-      }
-
       if (server.sensors[i].name !== 'users' && server.sensors[i].name !== 'load') {
         if ($("#" + server.sensors[i].name, serverg).length > 0) {
           $("#s" + server.sensors[i].name , serverg).html(server.sensors[i].value);
