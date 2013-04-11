@@ -11,7 +11,7 @@ var Server = {
       $("#susers", serverg).html(Server.getSensor(server, 'users').value);
     }
 
-    serverg.attr('class', 'server, ' + server.status);
+    serverg.attr('class', 'server ' + server.status);
 
     Server.renderSensors(server, serverg);
 
