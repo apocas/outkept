@@ -1,9 +1,19 @@
 window.DashboardView = Backbone.View.extend({
 
+  events: {
+    'click .filters a': 'filter'
+  },
+
   initialize: function () {
+  },
 
-
-
+  filter: function () {
+    $('.filters a').removeClass('btn-primary');
+    $(this).addClass('btn-primary');
+    var selector = $(this).attr('data-filter');
+    $('#servers_dashboard').isotope({ filter: selector });
+    window.connection.emit('filter', selector);
+    return false;
   },
 
   render:function () {
@@ -16,14 +26,6 @@ window.DashboardView = Backbone.View.extend({
         columnWidth: 10,
         isAnimated: true
       }
-    });
-
-    $('.filters a', this.el).click(function () {
-      $('.filters a', this.el).removeClass('btn-primary');
-      $(this).addClass('btn-primary');
-      var selector = $(this).attr('data-filter');
-      $('#servers_dashboard', this.el).isotope({ filter: selector });
-      return false;
     });
 
     window.connection.emit('rendered');
