@@ -25,6 +25,7 @@ var Server = {
     for (var i = 0; i < server.sensors.length; i++) {
       if (server.sensors[i].name !== 'users' && server.sensors[i].name !== 'load') {
         if ($("#" + server.sensors[i].name, serverg).length > 0) {
+          $("#" + server.sensors[i].name , serverg).attr('class', Sensor.getClass(server.sensors[i]));
           $("#s" + server.sensors[i].name , serverg).html(server.sensors[i].value);
         } else {
           $(".scontent", serverg).append(Sensor.render(server.sensors[i]));
