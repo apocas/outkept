@@ -11,10 +11,7 @@ var Server = {
       $("#susers", serverg).html(Server.getSensor(server, 'users').value);
     }
 
-    serverg.removeClass('alarmed');
-    serverg.removeClass('warned');
-    serverg.removeClass('normal');
-    serverg.addClass(server.status);
+    serverg.attr('class', 'server, ' + server.status);
 
     Server.renderSensors(server, serverg);
 
