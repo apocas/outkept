@@ -7,10 +7,10 @@ window.DashboardView = Backbone.View.extend({
   initialize: function () {
   },
 
-  filter: function () {
+  filter: function (e) {
     $('.filters a').removeClass('btn-primary');
-    $(this).addClass('btn-primary');
-    var selector = $(this).attr('data-filter');
+    $(e.target).addClass('btn-primary');
+    var selector = $(e.target).attr('data-filter');
     $('#servers_dashboard').isotope({ filter: selector });
     //window.connection.emit('filter', selector);
     return false;
