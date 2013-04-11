@@ -11,17 +11,6 @@ var Outkept = function () {
 
   //this.connection.on('connect', function () {});
 
-  /*
-  this.connection.on('servers', function (servers) {
-    //console.log(servers);
-    self.servers = self.servers.concat(servers);
-
-    self.servers.forEach(function (server) {
-      self.refreshServer(server);
-    });
-  });
-  */
-
   this.connection.on('authentication', function (result) {
     if(result === true) {
       window.logged = true;
