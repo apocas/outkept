@@ -1,36 +1,16 @@
 var Outkept = function () {
   this.servers = [];
-  this.connection = io.connect();
   this.counter = 0;
-
   this.mpoints = [0];
-  this.mpoints_max = 30;
 
   var self = this;
 
-  setInterval(function(){
-    self.mpoints.push(self.counter);
-    if (self.mpoints.length > self.mpoints_max) {
-      self.mpoints.splice(0,1);
-    }
-    $('.sparkline').sparkline(self.mpoints, {
-      width: 110,
-      height: 20,//Height of the chart - Defaults to 'auto' (line height of the containing tag)
-      lineColor: '#f8844b',//Used by line and discrete charts to specify the colour of the line drawn as a CSS values string
-      fillColor: '#f2f7f9',//Specify the colour used to fill the area under the graph as a CSS value. Set to false to disable fill
-      spotColor: '#467e8c',//The CSS colour of the final value marker. Set to false or an empty string to hide it
-      maxSpotColor: '#b9e672',//The CSS colour of the marker displayed for the maximum value. Set to false or an empty string to hide it
-      minSpotColor: '#FA5833',//The CSS colour of the marker displayed for the mimum value. Set to false or an empty string to hide it
-      spotRadius: 2,//Radius of all spot markers, In pixels (default: 1.5) - Integer
-      lineWidth: 1,//In pixels (default: 1) - Integer
-      tooltipSuffix: ' events per sec'
-    });
-    self.counter = 0;
-  },1000);
-
-  this.connection.on('connect', function () {
-    self.connection.emit('authenticate', {username: 'demo', password: 'demo'});
+  this.renderIsotope(function() {
+    self.renderHeartbeat();
+    self.connection = io.connect();
   });
+
+  //this.connection.on('connect', function () {});
 
   this.connection.on('servers', function (servers) {
     //console.log(servers);
@@ -68,6 +48,10 @@ var Outkept = function () {
   });
 };
 
+Outkept.prototype.login = function (username, password) {
+  this.connection.emit('authenticate', {'username': username, 'password': password});
+};
+
 Outkept.prototype.refreshServer = function (server) {
   var serverg = Server.render(server);
   if ($('#servers_dashboard').find('#' + server.id).length <= 0) {
@@ -84,4 +68,51 @@ Outkept.prototype.findServer = function (id) {
       return this.servers[i];
     }
   }
+};
+
+Outkept.prototype.renderIsotope = function (callback) {
+  $('#servers_dashboard').isotope({
+    itemSelector: '.server',
+    filter: '.alarmed, .warned',
+    masonry: {
+      columnWidth: 10,
+      isAnimated: true
+    }
+  });
+
+  $('.filters a').click(function () {
+    $('.filters a').removeClass('btn-primary');
+    $(this).addClass('btn-primary');
+    var selector = $(this).attr('data-filter');
+    $('#servers_dashboard').isotope({ filter: selector });
+    return false;
+  });
+  callback();
+};
+
+Outkept.prototype.renderHeartbeat = function () {
+  var mpoints_max = 30;
+  var self = this;
+
+  setInterval(function () {
+    self.mpoints.push(self.counter);
+    if (self.mpoints.length > mpoints_max) {
+      self.mpoints.splice(0,1);
+    }
+
+    $('.sparkline').sparkline(self.mpoints, {
+      width: 110,
+      height: 20,
+      lineColor: '#f8844b',
+      fillColor: '#f2f7f9',
+      spotColor: '#467e8c',
+      maxSpotColor: '#b9e672',
+      minSpotColor: '#FA5833',
+      spotRadius: 2,
+      lineWidth: 1,
+      tooltipSuffix: ' events per sec'
+    });
+
+    self.counter = 0;
+  },1000);
 };

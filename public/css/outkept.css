@@ -35,21 +35,21 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5edf2', endColorstr='#ffcdd5da', GradientType=0);
   border-color: #cdd5da #cdd5da #a1b0b9;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
   border-top: 1px solid #CFD6DB;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .alarmed {
-  box-shadow: 0px 0px 3px red;
+  box-shadow: 0 0 3px red;
 }
 
 .warned {
-  box-shadow: 0px 0px 3px orange;
+  box-shadow: 0 0 3px orange;
 }
 
 .normal {
-  box-shadow: 0px 0px 3px green;
+  box-shadow: 0 0 3px green;
 }
 
 .salarmed {
@@ -60,28 +60,51 @@
   color: #CC6600;
 }
 
+.hostname {
+  padding:0;
+  margin:0;
+  margin-bottom:3px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.address {
+  padding:0;
+  margin:0;
+  margin-bottom:3px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.ostats {
+  padding:0;
+  margin:0;
+  margin-top:4px;
+  margin-bottom:4px;
+}
+
 .isotope,
 .isotope .isotope-item {
-    /* change duration value to whatever you like */
-    -webkit-transition-duration: 0.8s;
-    -moz-transition-duration: 0.8s;
-    -ms-transition-duration: 0.8s;
-    -o-transition-duration: 0.8s;
-    transition-duration: 0.8s;
+  /* change duration value to whatever you like */
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  -ms-transition-duration: 0.8s;
+  -o-transition-duration: 0.8s;
+  transition-duration: 0.8s;
 }
 
 .isotope {
-    -webkit-transition-property: height, width;
-    -moz-transition-property: height, width;
-    -ms-transition-property: height, width;
-    -o-transition-property: height, width;
-    transition-property: height, width;
+  -webkit-transition-property: height, width;
+  -moz-transition-property: height, width;
+  -ms-transition-property: height, width;
+  -o-transition-property: height, width;
+  transition-property: height, width;
 }
 
 .isotope .isotope-item {
-    -webkit-transition-property: -webkit-transform, opacity;
-    -moz-transition-property:    -moz-transform, opacity;
-    -ms-transition-property:     -ms-transform, opacity;
-    -o-transition-property:      -o-transform, opacity;
-    transition-property:         transform, opacity;
+  -webkit-transition-property: -webkit-transform, opacity;
+  -moz-transition-property:    -moz-transform, opacity;
+  -ms-transition-property:     -ms-transform, opacity;
+  -o-transition-property:      -o-transform, opacity;
+  transition-property:         transform, opacity;
 }
