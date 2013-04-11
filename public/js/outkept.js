@@ -5,10 +5,9 @@ var Outkept = function () {
 
   var self = this;
 
-  this.renderIsotope(function() {
-    self.renderHeartbeat();
-    self.connection = io.connect();
-  });
+  self.renderHeartbeat();
+  self.connection = io.connect();
+  window.connection = self.connection;
 
   //this.connection.on('connect', function () {});
 
@@ -19,6 +18,15 @@ var Outkept = function () {
     self.servers.forEach(function (server) {
       self.refreshServer(server);
     });
+  });
+
+  this.connection.on('authentication', function (result) {
+    if(result === true) {
+      window.logged = true;
+      app.navigate("/", {
+        trigger: true
+      });
+    }
   });
 
   this.connection.on('server', function (server) {
@@ -35,7 +43,6 @@ var Outkept = function () {
   });
 
   this.connection.on('stats', function (data) {
-    //console.log(data);
     if (data.alarmed !== undefined) {
       $('#vwarnings').html(data.alarmed);
     }
@@ -46,6 +53,10 @@ var Outkept = function () {
       $('#vreactives').html();
     }
   });
+};
+
+Outkept.prototype.isLogged = function () {
+  this.connection.emit('authenticate', {'username': username, 'password': password});
 };
 
 Outkept.prototype.login = function (username, password) {
@@ -68,26 +79,6 @@ Outkept.prototype.findServer = function (id) {
       return this.servers[i];
     }
   }
-};
-
-Outkept.prototype.renderIsotope = function (callback) {
-  $('#servers_dashboard').isotope({
-    itemSelector: '.server',
-    filter: '.alarmed, .warned',
-    masonry: {
-      columnWidth: 10,
-      isAnimated: true
-    }
-  });
-
-  $('.filters a').click(function () {
-    $('.filters a').removeClass('btn-primary');
-    $(this).addClass('btn-primary');
-    var selector = $(this).attr('data-filter');
-    $('#servers_dashboard').isotope({ filter: selector });
-    return false;
-  });
-  callback();
 };
 
 Outkept.prototype.renderHeartbeat = function () {
