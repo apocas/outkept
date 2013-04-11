@@ -9,9 +9,12 @@ var Outkept = function () {
   self.connection = io.connect();
   window.connection = self.connection;
 
-  this.connection.on('authentication', function (result) {
-    if(result === true) {
+  this.connection.on('authentication', function (data) {
+    if(data.result === true) {
       window.logged = true;
+
+      $.cookie('outkept_session', data.sessionid, { expires: 7 });
+
       app.navigate("/", {
         trigger: true
       });
@@ -38,7 +41,7 @@ var Outkept = function () {
       $('#valerts').html(data.warned);
     }
     if (data.reactives !== undefined) {
-      $('#vreactives').html();
+      $('#vreactives').html(data.reactives);
     }
   });
 };
@@ -54,16 +57,16 @@ Outkept.prototype.login = function (username, password) {
 Outkept.prototype.refreshServer = function (server) {
   if(server.remove) {
     $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + server.id), function() {
-      $('#' + server.id).parent().isotope('reloadItems');
+      $('#servers_dashboard').isotope('reloadItems');
     });
   } else {
     var serverg = Server.render(server);
     if ($('#servers_dashboard').find('#' + server.id).length <= 0) {
       $('#servers_dashboard').isotope('insert', serverg, function() {
-        $('#' + server.id).parent().isotope('reloadItems');
+        $('#servers_dashboard').isotope('reloadItems');
       });
     }
-    //$('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
+    $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
   }
 };
 

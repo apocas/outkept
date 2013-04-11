@@ -11,6 +11,7 @@ window.LoginView = Backbone.View.extend({
 
   login: function () {
     window.connection.emit('authenticate', {'username': $("#username").val(), 'password': $("#password").val()});
+    return false;
   }
 
 });
