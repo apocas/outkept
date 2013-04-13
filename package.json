@@ -9,7 +9,7 @@
     "emailjs": "*",
     "lynx": "*",
     "ntwitter": "*",
-    "ecstatic": "*",
+    "express": "*",
     "socket.io": "*",
     "hiredis": "*",
     "redis": "*",
