@@ -6,7 +6,7 @@ var Server = {
     } else {
       serverg = $('#' + server.id);
       var cpus = Server.getSensor(server, 'load');
-      $("#sload", serverg).html(cpus.value);
+      $("#sload", serverg).html(parseFloat(cpus.value).toFixed(2));
       $("#sload", serverg).attr('class', Sensor.getClass(cpus));
       $("#susers", serverg).html(Server.getSensor(server, 'users').value);
     }
@@ -40,7 +40,7 @@ var Server = {
     var cpus = Server.getSensor(server, 'load');
     var users = Server.getSensor(server, 'users');
 
-    var ostats_content = "<i class='icon-user'></i><span id='susers'>" + users.value + "</span> | <i class='icon-signal'></i>  <span id='sload' class='" + Sensor.getClass(cpus) + "'>" + cpus.value + "</span>";
+    var ostats_content = "<i class='icon-user'></i><span id='susers'>" + users.value + "</span> | <i class='icon-signal'></i>  <span id='sload' class='" + Sensor.getClass(cpus) + "'>" + parseFloat(cpus.value).toFixed(2) + "</span>";
 
     $(".scontent", serverg).append("<p class='ostats'>" + ostats_content + "</p>");
 

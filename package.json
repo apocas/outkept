@@ -10,10 +10,15 @@
     "lynx": "*",
     "ntwitter": "*",
     "express": "*",
-    "socket.io": "*",
     "hiredis": "*",
     "redis": "*",
     "feedparser": "*",
-    "request": "*"
+    "request": "*",
+    "forever-monitor": "*",
+    "optimist": "*",
+
+    "reconnect": "*",
+    "shoe": "*",
+    "duplex-emitter": "*"
   }
 }

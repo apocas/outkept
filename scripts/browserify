@@ -1,0 +1,2 @@
+#!/bin/bash
+browserify -r reconnect/shoe -r duplex-emitter > bundle.js

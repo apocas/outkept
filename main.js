@@ -1,11 +1,7 @@
-var Outkept = require(__dirname + '/lib/outkept'),
-  prompt = require('prompt');
+var prompt = require('prompt'),
+  forever = require('forever-monitor');
 
-
-function main(passphrase) {
-  var outk = new Outkept(passphrase);
-  outk.crawl();
-}
+prompt.start();
 
 var schema = {
   properties: {
@@ -15,7 +11,14 @@ var schema = {
   }
 };
 
-prompt.start();
 prompt.get(schema, function (err, result) {
-  main(result.passphrase);
+  var child = new (forever.Monitor)('loader.js', {
+    options: ['--passphrase=' + result.passphrase]
+  });
+
+  child.on('exit', function () {
+    console.log('main.js has exited after 3 restarts');
+  });
+
+  child.start();
 });

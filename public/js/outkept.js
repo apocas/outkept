@@ -1,3 +1,6 @@
+var reconnect = require('reconnect/shoe'),
+  duplexEmitter = require('duplex-emitter');
+
 var Outkept = function () {
   this.servers = [];
   this.counter = 0;
@@ -6,43 +9,51 @@ var Outkept = function () {
   var self = this;
 
   self.renderHeartbeat();
-  self.connection = io.connect();
-  window.connection = self.connection;
 
-  this.connection.on('authentication', function (data) {
-    if(data.result === true) {
-      window.logged = true;
+  r = reconnect(function(stream) {
+    self.connection = duplexEmitter(stream);
 
-      $.cookie('outkept_session', data.sessionid, { expires: 7 });
+    window.connection = self.connection;
 
-      app.navigate("/", {
-        trigger: true
-      });
-    }
-  });
+    self.connection.on('authentication', function (data) {
+      if(data.result === true) {
+        window.logged = true;
 
-  this.connection.on('server', function (server) {
-    self.counter++;
-    var aux = self.findServer(server.id);
-    if (aux === undefined) {
-      self.servers.push(server);
-    } else {
-      aux = server;
-    }
+        $.cookie('outkept_session', data.sessionid, { expires: 7 });
 
-    self.refreshServer(server);
-  });
+        app.navigate("/", {
+          trigger: true
+        });
+      }
+    });
 
-  this.connection.on('stats', function (data) {
-    if (data.alarmed !== undefined) {
-      $('#vwarnings').html(data.alarmed);
-    }
-    if (data.warned !== undefined) {
-      $('#valerts').html(data.warned);
-    }
-    if (data.reactives !== undefined) {
-      $('#vreactives').html(data.reactives);
-    }
+    self.connection.on('server', function (server) {
+      self.counter++;
+      var aux = self.findServer(server.id);
+      if (aux === undefined) {
+        self.servers.push(server);
+      } else {
+        aux = server;
+      }
+
+      self.refreshServer(server);
+    });
+
+    self.connection.on('stats', function (data) {
+      if (data.alarmed !== undefined) {
+        $('#vwarnings').html(data.alarmed);
+      }
+      if (data.warned !== undefined) {
+        $('#valerts').html(data.warned);
+      }
+      if (data.reactives !== undefined) {
+        $('#vreactives').html(data.reactives);
+      }
+    });
+  }).connect('/websocket');
+
+  r.on('connect', function() {
+    console.log('connected');
   });
 };
 
