@@ -6,6 +6,13 @@ var Router = Backbone.Router.extend({
 
   initialize: function() {
     this.outkept = new Outkept();
+
+    this.bind('all', function(route) {
+      //auth
+      if(window.logged === undefined || window.logged !== true) {
+        window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
+      }
+    });
   },
 
   index: function() {

@@ -16,7 +16,6 @@
     "request": "*",
     "forever-monitor": "*",
     "optimist": "*",
-
     "reconnect": "*",
     "shoe": "*",
     "duplex-emitter": "*"

@@ -19,7 +19,7 @@ var Outkept = function () {
       if(data.result === true) {
         window.logged = true;
 
-        $.cookie('outkept_session', data.sessionid, { expires: 7 });
+        $.cookie('osession', data.sessionid, { expires: 15 });
 
         app.navigate("/", {
           trigger: true
@@ -50,10 +50,18 @@ var Outkept = function () {
         $('#vreactives').html(data.reactives);
       }
     });
+
+    stream.on('end', function () {
+      console.log('Disconnected');
+      window.logged = false;
+    });
   }).connect('/websocket');
 
   r.on('connect', function() {
-    console.log('connected');
+    console.log('Connected');
+    if(window.logged === undefined || window.logged !== true) {
+      window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
+    }
   });
 };
 
