@@ -18,8 +18,11 @@ var Outkept = function () {
     self.connection.on('authentication', function (data) {
       if(data.result === true) {
         window.logged = true;
+        console.log('Authenticated');
 
-        $.cookie('osession', data.sessionid, { expires: 15 });
+        if($.cookie('osession') === undefined) {
+          $.cookie('osession', data.sessionid, { expires: 15 });
+        }
 
         app.navigate("/", {
           trigger: true
@@ -60,6 +63,7 @@ var Outkept = function () {
   r.on('connect', function() {
     console.log('Connected');
     if(window.logged === undefined || window.logged !== true) {
+      console.log('Authenticating');
       window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
     }
   });
