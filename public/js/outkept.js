@@ -52,6 +52,15 @@ var Outkept = function () {
       if (data.reactives !== undefined) {
         $('#vreactives').html(data.reactives);
       }
+      if (data.servers !== undefined) {
+        $('#vservers').html(data.servers);
+      }
+      if (data.sensors !== undefined) {
+        $('#vsensors').html(data.sensors);
+      }
+      if (data.feeds !== undefined) {
+        $('#vfeeds').html(data.feeds);
+      }
     });
 
     stream.on('end', function () {

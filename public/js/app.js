@@ -9,7 +9,7 @@ var Router = Backbone.Router.extend({
 
     this.bind('all', function(route) {
       //auth
-      if(window.logged === undefined || window.logged !== true) {
+      if((window.logged === undefined || window.logged !== true) && window.connection !== undefined) {
         window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
       }
     });
