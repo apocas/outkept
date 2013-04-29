@@ -19,6 +19,7 @@ var Outkept = function () {
       if(data.result === true) {
         window.logged = true;
         console.log('Authenticated');
+        self.notification('Connection status', 'Connected and authenticated.');
 
         if($.cookie('osession') === undefined) {
           $.cookie('osession', data.sessionid, { expires: 15 });
@@ -65,6 +66,7 @@ var Outkept = function () {
 
     stream.on('end', function () {
       console.log('Disconnected');
+      self.notification('Connection status', 'Disconnected.');
       window.logged = false;
     });
   }).connect('/websocket');
@@ -75,6 +77,15 @@ var Outkept = function () {
       console.log('Authenticating');
       window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
     }
+  });
+};
+
+Outkept.prototype.notification = function (title, message) {
+  $.pnotify({
+      title: title,
+      text: message,
+      delay: 2000,
+      sticker: false
   });
 };
 
