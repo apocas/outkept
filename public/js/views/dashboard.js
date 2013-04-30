@@ -27,6 +27,7 @@ window.DashboardView = Backbone.View.extend({
       }
     });
 
+    window.rendered = true;
     window.connection.emit('rendered');
 
     return this;

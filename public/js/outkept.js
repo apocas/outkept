@@ -18,6 +18,11 @@ var Outkept = function () {
     self.connection.on('authentication', function (data) {
       if(data.result === true) {
         window.logged = true;
+
+        if(window.rendered === true) {
+          self.connection.emit('rendered');
+        }
+
         console.log('Authenticated');
         self.notification('Connection status', 'Connected and authenticated.');
 
