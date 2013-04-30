@@ -10,7 +10,13 @@ var Outkept = function () {
 
   self.renderHeartbeat();
 
-  r = reconnect(function(stream) {
+  var opts = {
+    randomisationFactor: 0,
+    initialDelay: 10,
+    maxDelay: 3000000
+  };
+
+  r = reconnect(opts, function(stream) {
     self.connection = duplexEmitter(stream);
 
     window.connection = self.connection;
@@ -49,6 +55,7 @@ var Outkept = function () {
     });
 
     self.connection.on('stats', function (data) {
+      self.counter++;
       if (data.alarmed !== undefined) {
         $('#vwarnings').html(data.alarmed);
       }
@@ -75,6 +82,10 @@ var Outkept = function () {
       window.logged = false;
     });
   }).connect('/websocket');
+
+  r.on('backoff', function(number, delay) {
+    console.log(number + ' ' + delay + 'ms');
+  });
 
   r.on('connect', function() {
     console.log('Connected');
