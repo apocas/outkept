@@ -48,10 +48,17 @@ var Outkept = function () {
       if (aux === undefined) {
         self.servers.push(server);
       } else {
+        if(aux.status !== 'normal' && server.status === 'normal') {
+          $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + aux.id), function() {
+            $('#servers_dashboard').isotope('reloadItems');
+          });
+        }
         aux = server;
       }
 
-      self.refreshServer(server);
+      if(server.status !== 'normal') {
+        self.refreshServer(server);
+      }
     });
 
     self.connection.on('stats', function (data) {
@@ -114,19 +121,13 @@ Outkept.prototype.login = function (username, password) {
 };
 
 Outkept.prototype.refreshServer = function (server) {
-  if(server.remove) {
-    $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + server.id), function() {
+  var serverg = Server.render(server);
+  if ($('#servers_dashboard').find('#' + server.id).length <= 0) {
+    $('#servers_dashboard').isotope('insert', serverg, function() {
       $('#servers_dashboard').isotope('reloadItems');
     });
-  } else {
-    var serverg = Server.render(server);
-    if ($('#servers_dashboard').find('#' + server.id).length <= 0) {
-      $('#servers_dashboard').isotope('insert', serverg, function() {
-        $('#servers_dashboard').isotope('reloadItems');
-      });
-    }
-    $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
   }
+  $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
 };
 
 Outkept.prototype.findServer = function (id) {
