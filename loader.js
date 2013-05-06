@@ -4,7 +4,7 @@ var Outkept = require(__dirname + '/lib/outkept'),
 
 function main(passphrase) {
   var outk = new Outkept(passphrase);
-  outk.crawl();
+  outk.start();
 }
 
 main(argv.passphrase);
