@@ -52,7 +52,8 @@ module.exports = [
     'reactive': 'exim -bpru | grep -e \'<>\' -e \'root@\' | awk {\'print $3\'} | xargs exim -Mrm 2> /dev/null',
     'verifier': 'if which exim >/dev/null; then echo yes; else echo no; fi;',
     'inverted': false,
-    'zero': false
+    'zero': false,
+    'timer': 60000 //sensor specific timer (millis)
   },
   {
     'name': 'memory',
@@ -74,7 +75,8 @@ module.exports = [
     'reactive': 'rm -rf /tmp/eaccelerator; rm -vf /tmp/cache_*; rm -vf /tmp/*.dat; rm -vf /tmp/*.cache;',
     'verifier': 'aux=$(df -h | grep /tmp | awk \'{ print $6 }\';); if [ -z "$aux" ]; then echo no; else echo yes; fi;',
     'inverted': false,
-    'zero': false
+    'zero': false,
+    'timer': 120000
   },
   {
     'name': 'phpfpm',
