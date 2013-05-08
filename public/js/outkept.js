@@ -25,10 +25,6 @@ var Outkept = function () {
       if(data.result === true) {
         window.logged = true;
 
-        if(window.rendered === true) {
-          self.connection.emit('rendered');
-        }
-
         console.log('Authenticated');
         self.notification('Connection status', 'Connected and authenticated.');
 
@@ -46,18 +42,10 @@ var Outkept = function () {
       self.counter++;
       var aux = self.findServer(server.id);
       if (aux === undefined) {
-        self.servers.push(server);
+        self.servers.push(new Server(server));
       } else {
-        if(aux.status !== 'normal' && server.status === 'normal') {
-          $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + aux.id), function() {
-            $('#servers_dashboard').isotope('reloadItems');
-          });
-        }
-        aux = server;
-      }
-
-      if(server.status !== 'normal') {
-        self.refreshServer(server);
+        aux.props = server;
+        aux.render();
       }
     });
 
@@ -120,19 +108,9 @@ Outkept.prototype.login = function (username, password) {
   this.connection.emit('authenticate', {'username': username, 'password': password});
 };
 
-Outkept.prototype.refreshServer = function (server) {
-  var serverg = Server.render(server);
-  if ($('#servers_dashboard').find('#' + server.id).length <= 0) {
-    $('#servers_dashboard').isotope('insert', serverg, function() {
-      $('#servers_dashboard').isotope('reloadItems');
-    });
-  }
-  $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
-};
-
 Outkept.prototype.findServer = function (id) {
   for (var i = 0; i < this.servers.length; i++) {
-    if (this.servers[i].id === id) {
+    if (this.servers[i].props.id === id) {
       return this.servers[i];
     }
   }

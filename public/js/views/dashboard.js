@@ -23,12 +23,9 @@ window.DashboardView = Backbone.View.extend({
       filter: '.alarmed, .warned',
       masonry: {
         columnWidth: 10,
-        isAnimated: true
+        isAnimated: false
       }
     });
-
-    window.rendered = true;
-    window.connection.emit('rendered');
 
     return this;
   }

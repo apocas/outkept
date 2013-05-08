@@ -1,58 +1,73 @@
-var Server = {
-  render: function (server) {
-    var serverg;
-    if ($("#" + server.id).length <= 0) {
-      serverg = Server.create(server);
+var Server = function (server) {
+  this.props = server;
+  this.rendered = false;
+};
+
+Server.prototype.render = function () {
+  var self = this;
+  if (this.rendered === false) {
+    if(this.props.status != 'normal') {
+      var serverg = this.create();
+      serverg.attr('class', 'server ' + this.props.status);
+      this.renderSensors(serverg);
+      self.rendered = true;
+      $('#servers_dashboard').isotope('insert', serverg, function() {
+        $('#servers_dashboard').isotope('reloadItems');
+        $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
+      });
+    }
+  } else {
+    if(this.props.status == 'normal') {
+      $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + this.props.id), function() {
+        self.rendered = false;
+        $('#servers_dashboard').isotope('reloadItems');
+        $('#servers_dashboard').isotope({ filter: $('.filters a .btn-primary').attr('data-filter') });
+      });
     } else {
-      serverg = $('#' + server.id);
-      var cpus = Server.getSensor(server, 'load');
-      $("#sload", serverg).html(parseFloat(cpus.value).toFixed(2));
-      $("#sload", serverg).attr('class', Sensor.getClass(cpus));
-      $("#susers", serverg).html(Server.getSensor(server, 'users').value);
+      this.renderSensors($('#' + this.props.id));
     }
-
-    serverg.attr('class', 'server ' + server.status);
-
-    Server.renderSensors(server, serverg);
-
-    return serverg;
-  },
-
-  renderSensors: function (server, serverg) {
-    for (var i = 0; i < server.sensors.length; i++) {
-      if (server.sensors[i].name !== 'users' && server.sensors[i].name !== 'load') {
-        if ($("#" + server.sensors[i].name, serverg).length > 0) {
-          $("#" + server.sensors[i].name , serverg).attr('class', Sensor.getClass(server.sensors[i]));
-          $("#s" + server.sensors[i].name , serverg).html(server.sensors[i].value);
-        } else {
-          $(".scontent", serverg).append(Sensor.render(server.sensors[i]));
-        }
-      }
-    }
-  },
-
-  create: function (server) {
-    var serverg = $('<div id="' + server.id + '" class="server"><div class="swrapper"><div class="scontent"></div></div></div>');
-
-    $(".scontent", serverg).html("<p class='hostname'>" + server.hostname.substr(0, 16) + "</p>");
-    $(".scontent", serverg).append("<p class='address'>" + server.address + "</p>");
-
-    var cpus = Server.getSensor(server, 'load');
-    var users = Server.getSensor(server, 'users');
-
-    var ostats_content = "<i class='icon-user'></i><span id='susers'>" + users.value + "</span> | <i class='icon-signal'></i>  <span id='sload' class='" + Sensor.getClass(cpus) + "'>" + parseFloat(cpus.value).toFixed(2) + "</span>";
-
-    $(".scontent", serverg).append("<p class='ostats'>" + ostats_content + "</p>");
-
-    return serverg;
-  },
-
-  getSensor: function (server, name) {
-    for (var i = 0; i < server.sensors.length; i++) {
-      if (server.sensors[i].name === name) {
-        return server.sensors[i];
-      }
-    }
-    return undefined;
   }
+};
+
+Server.prototype.renderSensors = function (serverg) {
+  var cpus = this.getSensor('load');
+  $("#sload", serverg).html(parseFloat(cpus.value).toFixed(2));
+  $("#sload", serverg).attr('class', Sensor.getClass(cpus));
+  $("#susers", serverg).html(this.getSensor('users').value);
+
+  for (var i = 0; i < this.props.sensors.length; i++) {
+    if (this.props.sensors[i].name !== 'users' && this.props.sensors[i].name !== 'load') {
+      if ($("#" + this.props.sensors[i].name, serverg).length > 0) {
+        $("#" + this.props.sensors[i].name , serverg).attr('class', Sensor.getClass(this.props.sensors[i]));
+        $("#s" + this.props.sensors[i].name , serverg).html(this.props.sensors[i].value);
+      } else {
+        $(".scontent", serverg).append(Sensor.render(this.props.sensors[i]));
+      }
+    }
+  }
+};
+
+Server.prototype.create = function () {
+  var serverg = $('<div id="' + this.props.id + '" class="server"><div class="swrapper"><div class="scontent"></div></div></div>');
+
+  $(".scontent", serverg).html("<p class='hostname'>" + this.props.hostname.substr(0, 16) + "</p>");
+  $(".scontent", serverg).append("<p class='address'>" + this.props.address + "</p>");
+
+  var cpus = this.getSensor('load');
+  var users = this.getSensor('users');
+
+  var ostats_content = "<i class='icon-user'></i><span id='susers'>" + users.value + "</span> | <i class='icon-signal'></i>  <span id='sload' class='" + Sensor.getClass(cpus) + "'>" + parseFloat(cpus.value).toFixed(2) + "</span>";
+
+  $(".scontent", serverg).append("<p class='ostats'>" + ostats_content + "</p>");
+
+  return serverg;
+};
+
+Server.prototype.getSensor = function (name) {
+  for (var i = 0; i < this.props.sensors.length; i++) {
+    if (this.props.sensors[i].name === name) {
+      return this.props.sensors[i];
+    }
+  }
+  return undefined;
 };
