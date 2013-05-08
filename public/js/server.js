@@ -1,6 +1,7 @@
 var Server = function (server) {
   this.props = server;
   this.rendered = false;
+  this.locked = false;
 };
 
 Server.prototype.render = function () {
@@ -33,7 +34,9 @@ Server.prototype.renderSensors = function (serverg) {
   var cpus = this.getSensor('load');
   $("#sload", serverg).html(parseFloat(cpus.value).toFixed(2));
   $("#sload", serverg).attr('class', Sensor.getClass(cpus));
-  $("#susers", serverg).html(this.getSensor('users').value);
+  var users = this.getSensor('users');
+  $("#susers", serverg).html(users.value);
+  $("#susers", serverg).attr('class', Sensor.getClass(users));
 
   for (var i = 0; i < this.props.sensors.length; i++) {
     if (this.props.sensors[i].name !== 'users' && this.props.sensors[i].name !== 'load') {
