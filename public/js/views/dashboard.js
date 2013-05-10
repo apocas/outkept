@@ -19,6 +19,7 @@ window.DashboardView = Backbone.View.extend({
     $(this.el).html(this.template());
 
     $('#servers_dashboard', this.el).isotope({
+      animationEngine : 'css',
       itemSelector: '.server',
       filter: '.alarmed, .warned',
       masonry: {
