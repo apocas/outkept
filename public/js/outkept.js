@@ -9,7 +9,6 @@ var Outkept = function () {
 
   self.connection = io.connect();
 
-
   window.connection = self.connection;
 
   self.connection.on('authentication', function (data) {
