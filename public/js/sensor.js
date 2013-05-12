@@ -2,9 +2,9 @@ var Sensor = {
 
   getClass: function (sensor) {
     var classn = "snormal";
-      if (sensor.alarmed) {
+      if (sensor.alarmed == 'true') {
         classn = "salarmed";
-      } else if (sensor.warned) {
+      } else if (sensor.warned == 'true') {
         classn = "swarned";
       }
       return classn;
