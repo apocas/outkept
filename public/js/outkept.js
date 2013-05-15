@@ -36,6 +36,8 @@ var Outkept = function () {
           trigger: true
         });
 
+      } else {
+        $.removeCookie('osession');
       }
     });
 
