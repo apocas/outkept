@@ -1,3 +1,6 @@
+var reconnect = require('reconnect/shoe'),
+  duplexEmitter = require('duplex-emitter');
+
 var Outkept = function () {
   this.servers = [];
   this.counter = 0;
@@ -7,65 +10,88 @@ var Outkept = function () {
 
   self.renderHeartbeat();
 
-  self.connection = io.connect();
+  var opts = {
+    randomisationFactor: 0,
+    initialDelay: 10,
+    maxDelay: 3000000
+  };
 
-  window.connection = self.connection;
+  r = reconnect(opts, function(stream) {
+    self.connection = duplexEmitter(stream);
 
-  self.connection.on('authentication', function (data) {
-    if(data.result === true) {
-      window.logged = true;
+    window.connection = self.connection;
 
-      console.log('Authenticated');
-      self.notification('Connection status', 'Connected and authenticated.');
+    self.connection.on('authentication', function (data) {
+      if(data.result === true) {
+        window.logged = true;
 
-      if($.cookie('osession') === undefined) {
-        $.cookie('osession', data.sessionid, { expires: 15 });
+        console.log('Authenticated');
+        self.notification('Connection status', 'Connected and authenticated.');
+
+        if($.cookie('osession') === undefined) {
+          $.cookie('osession', data.sessionid, { expires: 15 });
+        }
+
+        app.navigate("/", {
+          trigger: true
+        });
+
       }
+    });
 
-      app.navigate("/", {
-        trigger: true
-      });
-    }
+    self.connection.on('server', function (server) {
+      self.counter++;
+      var aux = self.findServer(server.id);
+      if (aux === undefined) {
+        self.servers.push(new Server(server));
+      } else {
+        aux.props = server;
+        aux.render();
+      }
+    });
+
+    self.connection.on('stats', function (data) {
+      self.counter++;
+      if (data.alarmed !== undefined) {
+        $('#vwarnings').html(data.alarmed);
+      }
+      if (data.warned !== undefined) {
+        $('#valerts').html(data.warned);
+      }
+      if (data.reactives !== undefined) {
+        $('#vreactives').html(data.reactives);
+      }
+      if (data.servers !== undefined) {
+        $('#vservers').html(data.servers);
+      }
+      if (data.sensors !== undefined) {
+        $('#vsensors').html(data.sensors);
+      }
+      if (data.feeds !== undefined) {
+        $('#vfeeds').html(data.feeds);
+      }
+    });
+
+    stream.on('end', function () {
+      console.log('Disconnected');
+      self.notification('Connection status', 'Disconnected.');
+      window.logged = false;
+    });
+  }).connect('/websocket');
+
+  r.on('backoff', function(number, delay) {
+    console.log(number + ' ' + delay + 'ms');
   });
 
-  self.connection.on('server', function (server) {
-    self.counter++;
-    var aux = self.findServer(server.id);
-    if (aux === undefined) {
-      self.servers.push(new Server(server));
-    } else {
-      aux.props = server;
-      aux.render();
+  r.on('connect', function() {
+    console.log('Connected');
+    if(window.logged === undefined || window.logged !== true) {
+      console.log('Authenticating');
+      window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
     }
   });
-
-  self.connection.on('stats', function (data) {
-    self.counter++;
-    if (data.alarmed !== undefined) {
-      $('#vwarnings').html(data.alarmed);
-    }
-    if (data.warned !== undefined) {
-      $('#valerts').html(data.warned);
-    }
-    if (data.reactives !== undefined) {
-      $('#vreactives').html(data.reactives);
-    }
-    if (data.servers !== undefined) {
-      $('#vservers').html(data.servers);
-    }
-    if (data.sensors !== undefined) {
-      $('#vsensors').html(data.sensors);
-    }
-    if (data.feeds !== undefined) {
-      $('#vfeeds').html(data.feeds);
-    }
-  });
-
-  if(window.logged === undefined || window.logged !== true) {
-    console.log('Authenticating');
-    window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
-  }
 };
+
 
 Outkept.prototype.notification = function (title, message) {
   $.pnotify({

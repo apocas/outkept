@@ -12,13 +12,16 @@ var schema = {
 };
 
 prompt.get(schema, function (err, result) {
-  var child = new (forever.Monitor)('loader.js', {
+  var loader = new (forever.Monitor)('lib/outkept.js', {
     options: ['--passphrase=' + result.passphrase]
+  }).on('exit', function () {
+    console.log('Loader has exited!');
   });
 
-  child.on('exit', function () {
-    console.log('main.js has exited after 3 restarts');
+  var network = new (forever.Monitor)('lib/network/network.js').on('exit', function () {
+    console.log('Network has exited!');
   });
 
-  child.start();
+  loader.start();
+  network.start();
 });

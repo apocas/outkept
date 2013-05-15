@@ -1,0 +1,32 @@
+<!-- Navbar
+  ================================================== -->
+<div class="navbar navbar-static-top navbar-inverse">
+  <div class="navbar-inner">
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+
+    <a class="brand" href="#">Outkept</a>
+  </div>
+</div>
+
+
+
+                <script type="text/javascript">
+                  $(document).ready(function() {
+                    setTimeout(function(){
+                      createStoryJS({
+                        type:       'timeline',
+                        width:      '100%',
+                        height:     '600',
+                        source:     'http://skynet.ptisp.pt/timeline',
+                        embed_id:   'timeline-embed'
+                      });
+                    }, 3000)
+                  });
+                </script>
+
+                <div id="timeline-embed"></div>
+

@@ -1,5 +1,6 @@
 var Router = Backbone.Router.extend({
   routes: {
+    "timeline": "timeline",
     "login": "login",
     "": "index"
   },
@@ -32,6 +33,14 @@ var Router = Backbone.Router.extend({
 
     templateLoader.load(["LoginView"], function() {
       $('#app_container').html(new LoginView().render().el);
+    });
+  },
+
+  timeline: function() {
+    var self = this;
+
+    templateLoader.load(["TimelineView"], function() {
+      $('#app_container').html(new TimelineView().render().el);
     });
   }
 });
