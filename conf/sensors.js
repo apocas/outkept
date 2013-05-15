@@ -79,6 +79,30 @@ module.exports = [
     'timer': 120000
   },
   {
+    'name': 'adaptec',
+    'alarm': 1,
+    'warning': 1,
+    'exported': true,
+    'cmd': '/usr/sbin/arcconf getconfig 1 | grep -i optimal | wc -l',
+    'reactive': '',
+    'verifier': 'if [ -f /usr/sbin/arcconf ]; then echo yes; else echo no; fi;',
+    'inverted': true,
+    'zero': true,
+    'timer': 3600000
+  },
+  {
+    'name': 'lsi',
+    'alarm': 1,
+    'warning': 1,
+    'exported': true,
+    'cmd': '/usr/sbin/megasasctl | grep -i degraded | wc -l',
+    'reactive': '',
+    'verifier': 'if [ -f /usr/sbin/megasasctl ]; then echo yes; else echo no; fi;',
+    'inverted': false,
+    'zero': true,
+    'timer': 3600000
+  },
+  {
     'name': 'phpfpm',
     'alarm': 500,
     'warning': 400,
