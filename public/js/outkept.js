@@ -52,6 +52,19 @@ var Outkept = function () {
       }
     });
 
+    self.connection.on('servers', function (servers) {
+      for (var i = 0; i < servers.length; i++) {
+        self.counter++;
+        var aux = self.findServer(servers[i].id);
+        if (aux === undefined) {
+          self.servers.push(new Server(servers[i]));
+        } else {
+          aux.props = servers[i];
+          aux.render();
+        }
+      }
+    });
+
     self.connection.on('stats', function (data) {
       self.counter++;
       if (data.alarmed !== undefined) {
