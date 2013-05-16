@@ -12,6 +12,20 @@
   font-size: 12px;
 }
 
+.opin {
+  width: 26px;
+  height: 26px;
+  background-image: url('../images/pin.png');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -8px;
+  left: -2px;
+}
+
+.opin:hover {
+    cursor: pointer;
+}
+
 .server {
   /*border: none !important;*/
   margin: 3px; 

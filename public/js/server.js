@@ -7,7 +7,7 @@ var Server = function (server) {
 Server.prototype.render = function () {
   var self = this;
   if (this.rendered === false) {
-    if(this.props.status != 'normal') {
+    if(this.props.status != 'normal' || this.locked === true) {
       var serverg = this.create();
       serverg.attr('class', 'server ' + this.props.status);
       this.renderSensors(serverg);
@@ -18,7 +18,7 @@ Server.prototype.render = function () {
       });
     }
   } else {
-    if(this.props.status == 'normal') {
+    if(this.props.status == 'normal' && this.locked === false) {
       $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + this.props.id), function() {
         self.rendered = false;
         $('#servers_dashboard').isotope('reloadItems');
@@ -28,6 +28,10 @@ Server.prototype.render = function () {
       this.renderSensors($('#' + this.props.id));
     }
   }
+};
+
+Server.prototype.deRender = function() {
+  // body...
 };
 
 Server.prototype.renderSensors = function (serverg) {
@@ -51,7 +55,11 @@ Server.prototype.renderSensors = function (serverg) {
 };
 
 Server.prototype.create = function () {
-  var serverg = $('<div id="' + this.props.id + '" class="server"><div class="swrapper"><div class="scontent"></div></div></div>');
+  var lockhtml = '';
+  if(this.locked === true) {
+    lockhtml = '<div class="opin"></div>';
+  }
+  var serverg = $('<div id="' + this.props.id + '" class="server">' + lockhtml + '<div class="swrapper"><div class="scontent"></div></div></div>');
 
   $(".scontent", serverg).html("<p class='hostname'>" + this.props.hostname.substr(0, 16) + "</p>");
   $(".scontent", serverg).append("<p class='address'>" + this.props.address + "</p>");

@@ -63,6 +63,8 @@ var Outkept = function () {
           aux.render();
         }
       }
+
+      self.renderSearch();
     });
 
     self.connection.on('stats', function (data) {
@@ -128,6 +130,31 @@ Outkept.prototype.login = function (username, password) {
 Outkept.prototype.findServer = function (id) {
   for (var i = 0; i < this.servers.length; i++) {
     if (this.servers[i].props.id === id) {
+      return this.servers[i];
+    }
+  }
+};
+
+Outkept.prototype.renderSearch = function() {
+  var server_names = [];
+  var self = this;
+  for (var i = 0; i < this.servers.length; i++) {
+    server_names.push(this.servers[i].props.hostname);
+    server_names.push(this.servers[i].props.address);
+  }
+
+  $('.typeahead_search').typeahead({source: server_names, updater:function (item) {
+      var s = self.searchServer(item);
+      s.locked = true;
+      s.render();
+      return '';
+    }
+  });
+};
+
+Outkept.prototype.searchServer = function(expression) {
+  for (var i = 0; i < this.servers.length; i++) {
+    if(this.servers[i].props.hostname == expression || this.servers[i].props.address == expression) {
       return this.servers[i];
     }
   }

@@ -17,9 +17,10 @@ var Router = Backbone.Router.extend({
   },
 
   index: function() {
+    var self = this;
     if(window.logged === true) {
       templateLoader.load(["DashboardView"], function() {
-        $('#app_container').html(new DashboardView().render().el);
+        $('#app_container').html(new DashboardView(self.outkept).render().el);
       });
     } else {
       app.navigate("/login", {
