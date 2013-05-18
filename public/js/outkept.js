@@ -136,20 +136,53 @@ Outkept.prototype.findServer = function (id) {
 };
 
 Outkept.prototype.renderSearch = function() {
-  var server_names = [];
+  var search_strings = [];
   var self = this;
   for (var i = 0; i < this.servers.length; i++) {
-    server_names.push(this.servers[i].props.hostname);
-    server_names.push(this.servers[i].props.address);
+    search_strings.push(this.servers[i].props.hostname);
+    search_strings.push(this.servers[i].props.address);
+
+    for (var y = 0; y < this.servers[i].props.sensors.length; y++) {
+      if(this.servers[i].props.sensors[y] != null && search_strings.indexOf(this.servers[i].props.sensors[y].name) < 0) {
+        search_strings.push(this.servers[i].props.sensors[y].name);
+      }
+    }
   }
 
-  $('.typeahead_search').typeahead({source: server_names, updater:function (item) {
+  $('.typeahead_search').typeahead({source: search_strings, updater:function (item) {
       var s = self.searchServer(item);
-      s.locked = true;
-      s.render();
+      if(s !== undefined) {
+        s.locked = true;
+        s.render();
+      } else {
+        var results = self.searchSensor(item);
+        var container = $('#searchModal').find('.modal-body');
+        container.html('');
+        var html = '';
+        html += '<table class="table table-striped table-hover">';
+        html += '<thead><tr><th>Value</th><th>Hostname</th><th>Address</th><th></th></tr></thead><tbody>';
+        for (var i = 0; i < results.length; i++) {
+          html += '<tr data-serverid="' + results[i].id + '"><td >' + results[i].value + '</td><td>' + results[i].hostname + '</td><td>' + results[i].address + '</td><td><button type="button" class="btn_pin btn btn-primary" data-loading-text="Pinned">Pin</button></td></tr>';
+        }
+        html += '</tbody></table>';
+        container.append(html);
+        $('#searchModal').modal();
+      }
       return '';
     }
   });
+};
+
+Outkept.prototype.searchSensor = function(expression) {
+  var sbuffer = [];
+  for (var i = 0; i < this.servers.length; i++) {
+    for (var y = 0; y < this.servers[i].props.sensors.length; y++) {
+      if (this.servers[i].props.sensors[y] != null && this.servers[i].props.sensors[y].name == expression) {
+        sbuffer.push({id: this.servers[i].props.id, address: this.servers[i].props.address, hostname: this.servers[i].props.hostname, value: this.servers[i].props.sensors[y].value});
+      }
+    }
+  }
+  return sbuffer;
 };
 
 Outkept.prototype.searchServer = function(expression) {

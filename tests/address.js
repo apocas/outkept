@@ -1,13 +1,11 @@
-var Crawler = require('../lib/crawler');
+var Crawler = require('../lib/network/crawler');
 
 
 var c = new Crawler({
   'start': '130.185.80.1',
-  'end': '130.185.83.254'
+  'end': '130.185.80.56'
 });
 
-for (var i = 0; i < 500; i++) {
+do {
   console.log(c.getCurrent());
-  c.next();
-}
-
+} while (c.next() != undefined);

@@ -2,11 +2,20 @@ window.DashboardView = Backbone.View.extend({
 
   events: {
     'click .filters a': 'filter',
-    'click .opin': 'click_pin'
+    'click .opin': 'click_pin',
+    'click .btn_pin': 'click_pin_on'
   },
 
   initialize: function (outkept) {
     this.outkept = outkept;
+  },
+
+  click_pin_on: function (e) {
+    var btn = $(e.target);
+    var server = this.outkept.findServer(btn.parent().parent().attr('data-serverid'));
+    server.locked = true;
+    server.render();
+    btn.button('loading');
   },
 
   click_pin: function (e) {
