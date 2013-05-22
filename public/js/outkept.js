@@ -67,6 +67,11 @@ var Outkept = function () {
       self.renderSearch();
     });
 
+    self.connection.on('message', function (message) {
+      console.log('MESSAGE:');
+      console.log(message);
+    });
+
     self.connection.on('stats', function (data) {
       self.counter++;
       if (data.alarmed !== undefined) {
@@ -143,7 +148,7 @@ Outkept.prototype.renderSearch = function() {
     search_strings.push(this.servers[i].props.address);
 
     for (var y = 0; y < this.servers[i].props.sensors.length; y++) {
-      if(this.servers[i].props.sensors[y] != null && search_strings.indexOf(this.servers[i].props.sensors[y].name) < 0) {
+      if(this.servers[i].props.sensors[y] !== null && search_strings.indexOf(this.servers[i].props.sensors[y].name) < 0) {
         search_strings.push(this.servers[i].props.sensors[y].name);
       }
     }
@@ -177,7 +182,7 @@ Outkept.prototype.searchSensor = function(expression) {
   var sbuffer = [];
   for (var i = 0; i < this.servers.length; i++) {
     for (var y = 0; y < this.servers[i].props.sensors.length; y++) {
-      if (this.servers[i].props.sensors[y] != null && this.servers[i].props.sensors[y].name == expression) {
+      if (this.servers[i].props.sensors[y] !== null && this.servers[i].props.sensors[y].name == expression) {
         sbuffer.push({id: this.servers[i].props.id, address: this.servers[i].props.address, hostname: this.servers[i].props.hostname, value: this.servers[i].props.sensors[y].value});
       }
     }
