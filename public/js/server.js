@@ -7,9 +7,13 @@ var Server = function (server) {
 Server.prototype.render = function () {
   var self = this;
   if (this.rendered === false) {
-    if(this.props.status != 'normal' || this.locked === true) {
+    if(this.props.status != 'normal' || this.locked === true || this.props.connected == 'false') {
       var serverg = this.create();
-      serverg.attr('class', 'server ' + this.props.status);
+      if(this.props.connected == 'false') {
+        serverg.attr('class', 'server disconnected');
+      } else {
+        serverg.attr('class', 'server ' + this.props.status);
+      }
       this.renderSensors(serverg);
       self.rendered = true;
       $('#servers_dashboard').isotope('insert', serverg, function() {

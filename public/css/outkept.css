@@ -66,6 +66,10 @@
   box-shadow: 0 0 3px green;
 }
 
+.disconnected {
+  box-shadow: 0 0 3px black;
+}
+
 .salarmed {
   color: #CC3333;
 }

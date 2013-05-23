@@ -120,7 +120,8 @@ Outkept.prototype.notification = function (title, message) {
       title: title,
       text: message,
       delay: 2000,
-      sticker: false
+      sticker: false,
+      history: false
   });
 };
 
