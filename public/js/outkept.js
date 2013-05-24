@@ -156,7 +156,7 @@ Outkept.prototype.renderSearch = function() {
         html += '<table class="table table-striped table-hover">';
         html += '<thead><tr><th>Value</th><th>Hostname</th><th>Address</th><th></th></tr></thead><tbody>';
         for (var i = 0; i < results.length; i++) {
-          html += '<tr data-serverid="' + results[i].id + '"><td >' + results[i].value + '</td><td>' + results[i].hostname + '</td><td>' + results[i].address + '</td><td><button type="button" class="btn_pin btn btn-primary" data-loading-text="Pinned">Pin</button></td></tr>';
+          html += '<tr data-serverid="' + results[i].id + '"><td ><span class="spvalue">' + results[i].value + '</span></td><td>' + results[i].hostname + '</td><td>' + results[i].address + '</td><td><button type="button" class="btn_pin btn btn-primary" data-loading-text="Pinned">Pin</button></td></tr>';
         }
         html += '</tbody></table>';
         container.append(html);

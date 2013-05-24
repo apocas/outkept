@@ -126,3 +126,8 @@
   -o-transition-property:      -o-transform, opacity;
   transition-property:         transform, opacity;
 }
+
+.spvalue {
+  font-size: 15px;
+  font-weight: bold;
+}
