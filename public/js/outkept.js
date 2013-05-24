@@ -5,6 +5,7 @@ var Outkept = function () {
   this.servers = [];
   this.counter = 0;
   this.mpoints = [0];
+  this.stats = {};
 
   var self = this;
 
@@ -73,25 +74,10 @@ var Outkept = function () {
     });
 
     self.connection.on('stats', function (data) {
+      self.stats = data;
+
       self.counter++;
-      if (data.alarmed !== undefined) {
-        $('#vwarnings').html(data.alarmed);
-      }
-      if (data.warned !== undefined) {
-        $('#valerts').html(data.warned);
-      }
-      if (data.reactives !== undefined) {
-        $('#vreactives').html(data.reactives);
-      }
-      if (data.servers !== undefined) {
-        $('#vservers').html(data.servers);
-      }
-      if (data.sensors !== undefined) {
-        $('#vsensors').html(data.sensors);
-      }
-      if (data.feeds !== undefined) {
-        $('#vfeeds').html(data.feeds);
-      }
+      self.renderStats(data);
     });
 
     stream.on('end', function () {
@@ -108,7 +94,9 @@ var Outkept = function () {
   r.on('connect', function() {
     console.log('Connected');
     if(window.logged === undefined || window.logged !== true) {
-      console.log('Authenticating');
+      if($.cookie('osession') !== undefined) {
+        $('#username').val('previous session detected, logging in...');
+      }
       window.connection.emit('authenticate', {'sessionid': $.cookie('osession')});
     }
   });
@@ -196,6 +184,31 @@ Outkept.prototype.searchServer = function(expression) {
     if(this.servers[i].props.hostname == expression || this.servers[i].props.address == expression) {
       return this.servers[i];
     }
+  }
+};
+
+Outkept.prototype.renderStats = function(data, parent) {
+  if(parent === undefined) {
+    parent = $('#stats');
+  }
+
+  if (data.alarmed !== undefined) {
+    $('#vwarnings', parent).html(data.alarmed);
+  }
+  if (data.warned !== undefined) {
+    $('#valerts', parent).html(data.warned);
+  }
+  if (data.reactives !== undefined) {
+    $('#vreactives', parent).html(data.reactives);
+  }
+  if (data.servers !== undefined) {
+    $('#vservers', parent).html(data.servers);
+  }
+  if (data.sensors !== undefined) {
+    $('#vsensors', parent).html(data.sensors);
+  }
+  if (data.feeds !== undefined) {
+    $('#vfeeds', parent).html(data.feeds);
   }
 };
 
