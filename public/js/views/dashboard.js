@@ -3,11 +3,30 @@ window.DashboardView = Backbone.View.extend({
   events: {
     'click .filters a': 'filter',
     'click .opin': 'click_pin',
-    'click .btn_pin': 'click_pin_on'
+    'click .btn_pin': 'click_pin_on',
+    'click #btn_console': 'click_console',
+    'click #btn_logout': 'click_logout'
   },
 
   initialize: function (outkept) {
     this.outkept = outkept;
+  },
+
+  click_console: function (e) {
+    e.preventDefault();
+    window.terminal.slideToggle('fast');
+    window.terminal.terminal.focus(focus = !focus);
+    window.terminal.terminal.attr({
+      scrollTop: window.terminal.terminal.attr("scrollHeight")
+    });
+  },
+
+  click_logout: function (e) {
+    e.preventDefault();
+    $.removeCookie('osession');
+    app.navigate("/login", {
+      trigger: true
+    });
   },
 
   click_pin_on: function (e) {
@@ -64,9 +83,9 @@ window.DashboardView = Backbone.View.extend({
         name: 'tilda',
         height: 100,
         enabled: false,
-        greetings: 'Outkept console',
+        greetings: 'Outkept console - http://abru.pt/documentation',
         keypress: function(e) {
-          if (e.which == 96) {
+          if (e.which == 20) {
             return false;
           }
         }
@@ -77,9 +96,11 @@ window.DashboardView = Backbone.View.extend({
       this.append('<div class="td"></div>');
       var self = this;
       self.terminal = this.find('.td').terminal(eval, settings);
+      window.terminal = self;
       var focus = false;
       $(document.documentElement).keypress(function(e) {
-        if (e.which == 86) {
+        console.log(e.which);
+        if (e.which == 20) {
           self.slideToggle('fast');
           self.terminal.focus(focus = !focus);
           self.terminal.attr({
@@ -93,7 +114,10 @@ window.DashboardView = Backbone.View.extend({
     };
 
     $('#tilda', this.el).tilda(function(command, terminal) {
-      terminal.echo('you type command "' + command + '"');
+      if(command == 'help') {
+        terminal.echo('Visit http://abru.pt/documentation');
+        terminal.echo('Ctrl+t to show/hide console');
+      }
     });
 
     this.outkept.renderStats(this.outkept.stats, this.el);

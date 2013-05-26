@@ -8,7 +8,18 @@
       <span class="icon-bar"></span>
     </a>
 
-    <a class="brand" href="#">Outkept</a>
+    <div class="nav-collapse collapse" id="main-menu" style="height: 0px;">
+      <ul class="nav" style="float: right;">
+        <li class="">
+          <a href="#" id="btn_console">Console</a>
+        </li>
+        <li class="">
+          <a href="#" id="btn_logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <a class="brand" href="#" style="position: absolute;top: 0px;">Outkept</a>
     
   </div>
 </div>
@@ -63,7 +74,7 @@
 
                 <section id="forms">
                   <div class="sub-header" style="height: 25px;">
-                    <h2 style="float: left">Servers</h2>
+                    <h2 style="float: left"><span id="output_message">Servers</span></h2>
 
                     <div class="pull-right">
                       <input type="text" data-provide="typeahead" autocomplete="off" style="height: 11px; margin-top: 2px; margin-right: 20px;" class="typeahead_search" placeholder="search …">

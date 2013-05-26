@@ -69,8 +69,17 @@ var Outkept = function () {
     });
 
     self.connection.on('message', function (message) {
-      console.log('MESSAGE:');
       console.log(message);
+      var d = new Date(0);
+      d.setUTCSeconds(message.date);
+      var aux = '';
+      if(message.type == 'trigger') {
+        aux = '(' + d.getHours() + ':' + d.getMinutes() + ') Sensor ' + message.sensor + ' ' + message.level + ' at ' + message.hostname + ' with value ' + message.value;
+      } else if(message.type == 'message') {
+        aux = '(' + d.getHours() + ':' + d.getMinutes() + ') ' + message.message;
+      }
+      window.terminal.terminal.echo(aux);
+      $('#output_message').html(aux);
     });
 
     self.connection.on('stats', function (data) {
