@@ -112,5 +112,12 @@ module.exports = [
     'verifier': 'if which php-fpm >/dev/null; then echo yes; else echo no; fi;',
     'inverted': false,
     'zero': true
+  },
++ {
++   'name': 'kernel',
++   'exported': true,
++   'cmd': 'uname -r | awk -F. \'{ printf("%d.%d.%d",$1,$2,$3); }\'',
++   'verifier': 'if which uname >/dev/null; then echo yes; else echo no; fi;',
++   'timer': 6000000
   }
 ];
