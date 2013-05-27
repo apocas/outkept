@@ -83,7 +83,7 @@ window.DashboardView = Backbone.View.extend({
         name: 'tilda',
         height: 100,
         enabled: false,
-        greetings: 'Outkept console - http://abru.pt/documentation',
+        greetings: 'Outkept console - http://outke.pt/documentation',
         keypress: function(e) {
           if (e.which == 20) {
             return false;
@@ -115,7 +115,7 @@ window.DashboardView = Backbone.View.extend({
 
     $('#tilda', this.el).tilda(function(command, terminal) {
       if(command == 'help') {
-        terminal.echo('Visit http://abru.pt/documentation');
+        terminal.echo('Visit http://outke.pt/documentation');
         terminal.echo('Ctrl+t to show/hide console');
       }
     });
