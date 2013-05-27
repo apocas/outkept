@@ -74,7 +74,7 @@ var Outkept = function () {
       d.setUTCSeconds(message.date);
       var aux = '';
       if(message.type == 'trigger') {
-        aux = '(' + d.getHours() + ':' + d.getMinutes() + ') Sensor ' + message.sensor + ' ' + message.level + ' at ' + message.hostname + ' with value ' + message.value;
+        aux = '(' + d.getHours() + ':' + d.getMinutes() + ') Sensor ' + message.sensor + ' ' + message.level + ' at ' + message.hostname + ' with value ' + parseFloat(message.value).toFixed(2);
       } else if(message.type == 'message') {
         aux = '(' + d.getHours() + ':' + d.getMinutes() + ') ' + message.message;
       }
