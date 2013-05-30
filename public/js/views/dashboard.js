@@ -99,7 +99,7 @@ window.DashboardView = Backbone.View.extend({
       window.terminal = self;
       var focus = false;
       $(document.documentElement).keypress(function(e) {
-        console.log(e.which);
+        //console.log(e.which);
         if (e.which == 20) {
           self.slideToggle('fast');
           self.terminal.focus(focus = !focus);

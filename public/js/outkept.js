@@ -69,7 +69,7 @@ var Outkept = function () {
     });
 
     self.connection.on('message', function (message) {
-      console.log(message);
+      //console.log(message);
       var d = new Date(0);
       d.setUTCSeconds(message.date);
       var aux = '';

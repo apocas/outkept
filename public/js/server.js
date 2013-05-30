@@ -22,7 +22,7 @@ Server.prototype.render = function () {
       });
     }
   } else {
-    if(this.props.status == 'normal' && this.locked === false) {
+    if(this.props.status == 'normal' && this.locked === false && this.props.connected == 'true') {
       $('#servers_dashboard').isotope('remove', $('#servers_dashboard').find('#' + this.props.id), function() {
         self.rendered = false;
         $('#servers_dashboard').isotope('reloadItems');
