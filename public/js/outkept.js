@@ -142,11 +142,13 @@ Outkept.prototype.renderSearch = function() {
   var search_strings = [];
   var self = this;
   for (var i = 0; i < this.servers.length; i++) {
-    search_strings.push(this.servers[i].props.hostname);
-    search_strings.push(this.servers[i].props.address);
+    if(this.servers[i].props.hostname != undefined && this.servers[i].props.address != undefined) {
+      search_strings.push(this.servers[i].props.hostname);
+      search_strings.push(this.servers[i].props.address);
+    }
 
     for (var y = 0; y < this.servers[i].props.sensors.length; y++) {
-      if(this.servers[i].props.sensors[y] !== null && search_strings.indexOf(this.servers[i].props.sensors[y].name) < 0) {
+      if(this.servers[i].props.sensors[y] !== null && search_strings.indexOf(this.servers[i].props.sensors[y].name) < 0 && this.servers[i].props.sensors[y].name != undefined) {
         search_strings.push(this.servers[i].props.sensors[y].name);
       }
     }
