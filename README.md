@@ -1,6 +1,6 @@
 Outkept - http://outke.pt
 =======
 
-Outkept v2 (rewritten from scratch in node.js)
+Outkept v2
 
 Documentation at http://outke.pt/documentation

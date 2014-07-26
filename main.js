@@ -1,35 +1,50 @@
 var prompt = require('prompt'),
-  forever = require('forever-monitor'),
   fs = require('fs'),
-  outils = require('./lib/utils');
+  outils = require('./lib/utils'),
+  cp = require('child_process'),
+  vendors = require('./vendors'),
+  Runner = require('./lib/crawler/runner');
+
+
+var loaderMain,
+  passphrase,
+  shutting = false,
+  schema = {
+    properties: {
+      passphrase: {
+        hidden: true
+      }
+    }
+  };
+
+process.on('exit', function() {
+  loaderMain.removeAllListeners('exit');
+  loaderMain.kill('SIGHUP');
+});
 
 prompt.start();
 
-var schema = {
-  properties: {
-    passphrase: {
-      hidden: true
-    }
-  }
-};
+function loadMain() {
+  loaderMain = cp.fork('lib/outkept.js');
+  loaderMain.send({ 'boot': passphrase });
+
+  loaderMain.on('exit', function (code) {
+    console.log('Main loader has exited ' + code);
+
+    vendors.mongo(function(db) {
+      db.collection('servers').update({}, {$set: {connected: false}}, { multi: true }, function() {
+        loadMain();
+      });
+    });
+  });
+}
 
 prompt.get(schema, function (err, result) {
-  fs.writeFile('conf/.p', result.passphrase, function (err) {
-    if (err) return console.log(err);
+  if (err) return console.log(err);
 
-    var loader = new (forever.Monitor)('lib/outkept.js').on('exit', function () {
-      console.log('Loader has exited!');
-    });
+  passphrase = result.passphrase;
+  loadMain();
 
-    var network = new (forever.Monitor)('lib/network/network.js').on('exit', function () {
-      console.log('Network has exited!');
-    });
-
-    loader.start();
-    network.start();
-  });
-});
-
-process.on('exit', function () {
-  outils.secureDelete('conf/.p');
+  var runnerCrawlers = new Runner(passphrase);
+  runnerCrawlers.start();
 });

@@ -20,7 +20,7 @@ request('http://rss.phishtank.com/rss/asn/?asn=24768')
   });
   */
 
-  request('http://www.zone-h.org/rss/defacements').pipe(new FeedParser()).on('article', function (article) {
+  request('http://www.zone-h.org/rss/specialdefacements').pipe(new FeedParser()).on('article', function (article) {
     // do something else
     console.log(article['title']);
   });
