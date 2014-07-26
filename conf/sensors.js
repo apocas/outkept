@@ -27,7 +27,7 @@ module.exports = [
     'warning': 250,
     'exported': true,
     'cmd': 'ps aux | grep httpd | grep -v grep | wc -l',
-    'reactive': 'killall httpd php; sleep 3; killall httpd php; sleep 3; service httpd start;',
+    'reactive': '',
     'verifier': 'if which httpd >/dev/null; then echo yes; else echo no; fi;',
     'inverted': false,
     'zero': false
@@ -38,7 +38,7 @@ module.exports = [
     'warning': 30,
     'exported': true,
     'cmd': 'mysqladmin process 2> /dev/null | grep localhost | grep -v Sleep | grep -v Delayed | wc -l',
-    'reactive': 'killall httpd php; sleep 1; service httpd start;',
+    'reactive': '',
     'verifier': 'if [ -f ~/.my.cnf ]; then echo yes; else echo no; fi;',
     'inverted': false,
     'zero': true
@@ -119,5 +119,11 @@ module.exports = [
     'cmd': 'uname -r | awk -F. \'{ printf("%d.%d.%d",$1,$2,$3); }\'',
     'verifier': 'if which uname >/dev/null; then echo yes; else echo no; fi;',
     'timer': 6000000
+  },
+  {
+    'name': 'time',
+    'exported': true,
+    'cmd': 'date | awk \'{print $2$3,$4}\'',
+    'verifier': 'if which date >/dev/null; then echo yes; else echo no; fi;'
   }
 ];

@@ -1,15 +1,14 @@
 module.exports = {
-  'redis': '127.0.0.1', //redis server address
-
-  'web_user': 'outkept', //dashboard username
-  'web_password': 'outkept', //dashboard password
+  'mongo_host': '127.0.0.1', //mongodb server address
+  'mongo_port': '27017',
+  'mongo_database': 'outkept',
 
   'alarm': 2,
   'reactive': true, //reactive commands enabled
-  'timer': 10000, //default pooling interval, each sensor may have its own (millis)
+  'timer': 5000, //default pooling interval, each sensor may have its own (millis)
 
-  'crawler_user': 'outkept', //username to be used
-  'crawler_key': '/home/outkept/.ssh/id_rsa', //auth key
+  'crawler_user': 'user', //username to be used
+  'crawler_key': '/Users/user/.ssh/id_rsa', //auth key
   'crawler_port': 22, //ports
 
   'mail_enable': true,
@@ -19,11 +18,6 @@ module.exports = {
   'mail_from': 'outkept@yourcompany.com',
   'notification_mail': 'reports@yourcompany.com',
 
-  'statsd_enable': false,
-  'statsd_host': '192.168.200.200',
-  'statsd_port': 8125,
-  'statsd_root': 'outkept',
-
   'twitter_enable': false,
   'twitter_consumer_key': 'XXXXXXXXXXXX',
   'twitter_consumer_secret': 'XXXXXXXXXXXX',
@@ -32,12 +26,8 @@ module.exports = {
 
   'ranges': [
     {
-      'start': '192.168.1.0',
-      'end': '192.168.20.225'
-    },
-    {
-      'start': '192.168.40.0',
-      'end': '192.168.60.250'
+      'start': '192.168.1.2',
+      'end': '192.168.1.254'
     }
   ]
 };
