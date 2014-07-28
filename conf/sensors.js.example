@@ -72,7 +72,7 @@ module.exports = [
     'warning': 80,
     'exported': true,
     'cmd': 'aux=$(df -h | grep /tmp | awk \'{print $5}\'); echo ${aux%\\%}',
-    'reactive': 'rm -rf /tmp/eaccelerator; rm -vf /tmp/cache_*; rm -vf /tmp/*.dat; rm -vf /tmp/*.cache;',
+    'reactive': '',
     'verifier': 'aux=$(df -h | grep /tmp | awk \'{ print $6 }\';); if [ -z "$aux" ]; then echo no; else echo yes; fi;',
     'inverted': false,
     'zero': false,
@@ -123,7 +123,7 @@ module.exports = [
   {
     'name': 'time',
     'exported': true,
-    'cmd': 'date | awk \'{print $2$3,$4}\'',
+    'cmd': 'date +%d/%m-%H:%M:%S',
     'verifier': 'if which date >/dev/null; then echo yes; else echo no; fi;'
   }
 ];

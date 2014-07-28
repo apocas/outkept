@@ -1,0 +1,24 @@
+module.exports = {
+  'mongo_host': '127.0.0.1', //mongodb server address
+  'mongo_port': '27017',
+  'mongo_database': 'outkept',
+
+  'alarm': 2,
+  'reactive': true, //reactive commands enabled
+  'timer': 5000, //default pooling interval, each sensor may have its own (millis)
+
+  'crawler_user': 'username', //username to be used
+  'crawler_key': '/home/username/.ssh/id_rsa', //auth key
+  'crawler_port': 22, //port
+
+  'ranges': [
+    {
+      'start': '192.168.1.2',
+      'end': '192.168.1.254'
+    },
+    {
+      'start': '192.168.10.2',
+      'end': '192.168.10.254'
+    }
+  ]
+};

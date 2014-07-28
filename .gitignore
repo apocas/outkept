@@ -1,5 +1,9 @@
-conf
-
 node_modules
 
 .DS_Store
+
+conf/feeds.js
+
+conf/sensors.js
+
+conf/config.js
