@@ -5,8 +5,6 @@
     "ssh2": "*",
     "prompt": "*",
     "process": "*",
-    "emailjs": "*",
-    "ntwitter": "*",
     "mongodb": "*",
     "feedparser": "*",
     "request": "*",
