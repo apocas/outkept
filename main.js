@@ -3,11 +3,11 @@ var prompt = require('prompt'),
   outils = require('./lib/utils'),
   cp = require('child_process'),
   vendors = require('./vendors'),
-  Runner = require('./lib/crawler/runner');
+  Runner = require('./lib/crawler/runner'),
+  config = require('./conf/config');
 
 
 var loaderMain,
-  passphrase,
   shutting = false,
   schema = {
     properties: {
@@ -24,16 +24,16 @@ process.on('exit', function() {
 
 prompt.start();
 
-function loadMain() {
+function loadMain(passphrase, key) {
   loaderMain = cp.fork('lib/outkept.js');
-  loaderMain.send({ 'boot': passphrase });
+  loaderMain.send({ 'boot': passphrase,  'key': key});
 
   loaderMain.on('exit', function (code) {
     console.log('Main loader has exited ' + code);
 
     vendors.mongo(function(db) {
       db.collection('servers').update({}, {$set: {connected: false}}, { multi: true }, function() {
-        loadMain();
+        loadMain(passphrase, key);
       });
     });
   });
@@ -42,9 +42,12 @@ function loadMain() {
 prompt.get(schema, function (err, result) {
   if (err) return console.log(err);
 
-  passphrase = result.passphrase;
-  loadMain();
+  var passphrase = result.passphrase;
+  var key = fs.readFileSync(config.crawler_key).toString('utf-8');
+  outils.secureDelete(config.crawler_key);
 
-  var runnerCrawlers = new Runner(passphrase);
+  loadMain(passphrase, key);
+
+  var runnerCrawlers = new Runner(passphrase, key);
   runnerCrawlers.start();
 });
