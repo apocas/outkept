@@ -34,13 +34,13 @@
 
 ## Configuration
 
-## Sensors
+### Sensors
 
 * In `Outkept` you dont need to specify which sensors each server supports, `Outkept` automatically does that for you using the `verifier` field. Instead you specify a library of sensors, which then will be used by the system.
 
 * Each sensor is defined in the `sensors.js` file in the JSON format (inside `conf` folder).
 
-### Floating point sensor
+#### Floating point sensor
 
 ``` js
 {
@@ -57,7 +57,7 @@
 }
 ```
 
-### String sensor
+#### String sensor
 
 * If you omit the warning and alarm field, sensor will be defined as string.
 
@@ -77,11 +77,11 @@
 * **zero** - If true then zero will put the sensor in alarm state. (ex. daemon not running)
 * **timer** - Pooling interval in milliseconds, in each tick cmd is sent to the server.
 
-## Feeds
+### Feeds
 
 * Using feeds, you may listen for external events and notify your team using the available notification hooks.
 
-### Examples
+#### Examples
 
 ``` js
 module.exports = [
