@@ -4,10 +4,14 @@ var prompt = require('prompt'),
   cp = require('child_process'),
   vendors = require('./vendors'),
   Runner = require('./lib/crawler/runner'),
-  config = require('./conf/config');
+  config = require('./conf/config'),
+  Workers = require('./workers'),
+  Feeds = require('./lib/feeds/feeds');
 
 
 var loaderMain,
+  workersLoader,
+  runnerCrawlers,
   shutting = false,
   schema = {
     properties: {
@@ -18,8 +22,11 @@ var loaderMain,
   };
 
 process.on('exit', function() {
+  console.log('Killing everything...');
   loaderMain.removeAllListeners('exit');
   loaderMain.kill('SIGHUP');
+  workersLoader.kill('SIGHUP');
+  runnerCrawlers.kill('SIGHUP');
 });
 
 prompt.start();
@@ -39,6 +46,15 @@ function loadMain(passphrase, key) {
   });
 }
 
+function loadFeeds() {
+  var feeds = new Feeds();
+
+  feeds.on('alert', function (feed, data) {
+    //console.log(feed.template.name + ' reported ' + data);
+    outils.sendFeed(feed.template.name, data);
+  });
+}
+
 prompt.get(schema, function (err, result) {
   if (err) return console.log(err);
 
@@ -48,6 +64,11 @@ prompt.get(schema, function (err, result) {
 
   loadMain(passphrase, key);
 
-  var runnerCrawlers = new Runner(passphrase, key);
-  runnerCrawlers.start();
+  runnerCrawlers = new Runner();
+  runnerCrawlers.start(passphrase, key);
+
+  workersLoader = new Workers();
+  workersLoader.load(passphrase, key);
+
+  loadFeeds();
 });

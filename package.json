@@ -10,6 +10,7 @@
     "request": "*",
     "optimist": "*",
     "ssh2-multiplexer": "*",
-    "mubsub": "*"
+    "mubsub": "*",
+    "async": "*"
   }
 }

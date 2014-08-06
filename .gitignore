@@ -7,3 +7,7 @@ conf/feeds.js
 conf/sensors.js
 
 conf/config.js
+
+workers/csf.js
+
+tests/unlock.js
