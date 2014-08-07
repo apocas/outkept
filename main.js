@@ -4,13 +4,13 @@ var prompt = require('prompt'),
   vendors = require('./vendors'),
   Runner = require('./lib/crawler/runner'),
   config = require('./conf/config'),
-  Workers = require('./workers'),
+  Plugins = require('./plugins'),
   Feeds = require('./lib/feeds/feeds'),
   Loader = require('./loader');
 
 
 var loadersMain = [],
-  workersLoader,
+  pluginsLoader,
   loaded = [],
   runnerCrawlers,
   shutting = false,
@@ -29,7 +29,7 @@ process.on('exit', function() {
     loadersMain[i].kill();
   }
 
-  workersLoader.kill('SIGHUP');
+  pluginsLoader.kill('SIGHUP');
   runnerCrawlers.kill('SIGHUP');
 });
 
@@ -84,8 +84,8 @@ prompt.get(schema, function (err, result) {
   runnerCrawlers = new Runner();
   runnerCrawlers.start(passphrase, key);
 
-  workersLoader = new Workers();
-  workersLoader.load(passphrase, key);
+  pluginsLoader = new Plugins();
+  pluginsLoader.load(passphrase, key);
 
   loadFeeds();
 });

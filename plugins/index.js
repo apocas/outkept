@@ -1,13 +1,13 @@
 var cp = require('child_process');
 
 
-var Workers = function() {
-  this.workers = [];
+var Plugins = function() {
+  this.plugins = [];
 };
 
 
-Workers.prototype.load = function(passphrase, key) {
-  console.log('Workers starting up...');
+Plugins.prototype.load = function(passphrase, key) {
+  console.log('Plugins starting up...');
   var self = this;
 
   require('fs').readdirSync(__dirname + '/').filter(function(file) {
@@ -18,15 +18,15 @@ Workers.prototype.load = function(passphrase, key) {
       'boot': passphrase,
       'key': key
     });
-    self.workers.push(loader);
+    self.plugins.push(loader);
   });
 };
 
-Workers.prototype.kill = function(type) {
-  for (var i = 0; i < this.workers.length; i++) {
-    this.workers[i].kill(type);
+Plugins.prototype.kill = function(type) {
+  for (var i = 0; i < this.plugins.length; i++) {
+    this.plugins[i].kill(type);
   }
 };
 
 
-module.exports = Workers;
+module.exports = Plugins;
