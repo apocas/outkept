@@ -14,8 +14,6 @@ CSF.prototype.start = function() {
   function unlock(server, event) {
     var ip = event.ip.trim().replace(/;/g, '');
     server.connectionPool.send('csf -dr "' + ip + '"; csf -tr "' + ip + '"', function (err, data) {
-      //console.log(err);
-      //console.log(data.toString('utf-8'));
       setTimeout(function() {
         server.disconnect();
       }, 10000);
@@ -38,17 +36,11 @@ CSF.prototype.start = function() {
           var selfs = this;
           if(event.type == 'unlock') {
             this.connectionPool.send('csf -g "' + ip + '"', function (err, data) {
-
-              //console.log(err);
-              //console.log(data.toString('utf-8'));
-
               if (data && data.toString('utf-8').indexOf('No matches found for ' + ip + ' in iptables') === -1) {
                 var aux = data.toString('utf-8');
                 aux = aux.trim().split('\n');
                 var motive = aux[aux.length - 1];
-
                 unlock(selfs, event);
-
                 ev.message = event.hostname + ' -> ' + motive;
               } else {
                 ev.message = event.hostname + ' -> IP not blocked.';
@@ -62,10 +54,6 @@ CSF.prototype.start = function() {
               server.disconnect();
             });
           }
-        });
-
-        server.on('offline', function(err) {
-          console.log(err);
         });
 
         server.on('closed', function(connected) {
