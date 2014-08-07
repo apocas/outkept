@@ -22,7 +22,11 @@
 
 ### Processes
 
-* `Outkept` uses multiples processes, each subnet is crawled in a separated process, a process for server monitoring and a main controller process.
+#### `Outkept` uses multiples processes.
+
+* Each subnet is crawled in a separated process.
+* Each 50 servers are managed and monitored by a process.
+* A main controller process.
 
 ### SSH Connections
 
