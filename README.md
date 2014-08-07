@@ -1,11 +1,11 @@
 # Outkept - http://outke.pt
 
 
-* The idea behind `Outkept` was to build a tool that could auto-discover your cluster profile and simultaneously start monitoring and controlling each node it finds.
+* The idea behind `Outkept` was to build a tool that could auto-discover your cluster profile and simultaneously start monitoring and controlling each server it finds.
 
 * If you have a heterogeneous cluster constantly changing, `Outkept` allows you to easily automate control behaviour and cluster monitoring.
 
-* There is no hardcoded behaviour, instead it features a user defined pool of available sensors and stabilization/reactive action for each sensor.
+* There is no hardcoded behaviour, instead it features a user defined pool of available sensors and stabilization/reactive action for each sensor if a threshold is reached.
 
 * When it finds a new server in one of the monitored subnets, it looks for supported sensors by running a verifier command that each sensor has (ex. mysql exists? in a mysql thread number sensors).
 
@@ -32,7 +32,7 @@
 
 * Each server has a SSH connection to it, inside this connection `Outkept` will use multiple channels in order to acquire it's sensor's data.
 
-* By default the majority of SSH daemons support 10 channels per connection, this does NOT mean that `Outkept` will only support 10 sensors for each server, instead `Outkept` multiplexes the available channels in each connection.
+* By default the majority of SSH daemons support 10 channels per connection, this does NOT mean that `Outkept` will only support 10 sensors for each server, instead the available channels are multiplexed.
 
 * If you set all your sensors in the millisecond range and your network's latency is high, your server will queue up since the channel pool will not be able to dispatch it in time. When this happens a queued alert is shown in the dashboard in the affected server. To avoid this adjust sensors accordingly or increase the channel limit in your SSH daemon.
 
@@ -40,9 +40,9 @@
 
 ### Sensors
 
-* In `Outkept` you dont need to specify which sensors each server supports, `Outkept` automatically does that for you using the `verifier` field. Instead you specify a library of sensors, which then will be used by the system.
+* In `Outkept` you don't need to specify which sensors each server supports, `Outkept` automatically does that for you using the `verifier` field. Instead you specify a library of sensors, which then will be used by the system.
 
-* Each sensor is defined in the `sensors.js` file in the JSON format (inside `conf` folder).
+* Each sensor is defined in the `sensors.js` file in using JSON format (inside `conf` folder).
 
 #### Floating point sensor
 
@@ -108,6 +108,9 @@ module.exports = [
   }
 ];
 ```
+
+## Plugins
+* Check the example in the plugins folder.
 
 ## External modules
 
