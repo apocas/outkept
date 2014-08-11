@@ -1,16 +1,15 @@
 {
   "name": "outkept",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "dependencies": {
-    "ssh2": "*",
-    "prompt": "*",
-    "process": "*",
-    "mongodb": "*",
-    "feedparser": "*",
-    "request": "*",
-    "optimist": "*",
-    "ssh2-multiplexer": "*",
-    "mubsub": "*",
-    "async": "*"
+    "ssh2": "0.3.x",
+    "prompt": "0.2.x",
+    "process": "0.7.x",
+    "mongodb": "1.4.x",
+    "feedparser": "0.18.x",
+    "request": "2.39.x",
+    "ssh2-multiplexer": "0.0.x",
+    "mubsub": "1.0.x",
+    "async": "0.9.x"
   }
 }
