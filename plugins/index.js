@@ -11,7 +11,7 @@ Plugins.prototype.load = function(passphrase, key) {
   var self = this;
 
   require('fs').readdirSync(__dirname + '/').filter(function(file) {
-    return file.match(/.+\.js/g) !== null && file !== 'index.js';
+    return file.match(/.+\.js+$/) !== null && file !== 'index.js';
   }).forEach(function(file) {
     var loader = cp.fork(__dirname + '/' + file);
     loader.send({
