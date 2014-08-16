@@ -22,7 +22,7 @@
 
 ### Processes
 
-#### `Outkept` uses multiples processes.
+#### `Outkept` uses multiple processes.
 
 * Each subnet is crawled in a separated process.
 * Each 50 servers are managed and monitored by a process.
