@@ -10,6 +10,7 @@
     "request": "2.39.x",
     "ssh2-multiplexer": "0.0.x",
     "mubsub": "1.0.x",
-    "async": "0.9.x"
+    "async": "0.9.x",
+    "gauss": "0.2.x"
   }
 }

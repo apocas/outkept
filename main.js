@@ -45,13 +45,13 @@ function loadMain(passphrase, key, ids) {
 function loadFeeds() {
   var feeds = new Feeds();
 
-  feeds.on('alert', function (feed, data) {
+  feeds.on('alert', function(feed, data) {
     console.log('Feed ' + feed.template.name + ' reported ' + data);
     outils.sendFeed(feed.template.name, data);
   });
 }
 
-prompt.get(schema, function (err, result) {
+prompt.get(schema, function(err, result) {
   if (err) return console.log(err);
 
   var passphrase = result.passphrase;
@@ -66,8 +66,8 @@ prompt.get(schema, function (err, result) {
         var ids = [];
 
         for (var i = 0; i < replies.length; i++) {
-          if(loaded.indexOf(replies[i].id) === -1) {
-            if(l.ids.length < 50) {
+          if (loaded.indexOf(replies[i].id) === -1) {
+            if (l.ids.length < 50) {
               l.loadServer(replies[i].id);
               loaded.push(replies[i].id);
             } else {
