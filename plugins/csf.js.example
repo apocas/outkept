@@ -20,51 +20,54 @@ CSF.prototype.start = function() {
     });
   }
 
-  vendors.mongo(function(db) {
-    vendors.mongopubsub.subscribe('csf', function (event) {
-      var ev = {
-        type: 'csf',
-        message: event.hostname + ' -> CSF operation failed.'
-      };
-      var ip = event.ip.trim().replace(/;/g, '');
+  var subscriber = vendors.redis.createClient();
+  subscriber.subscribe('csf');
 
-      if(event.hostname) {
-        console.log(event);
-        var server = new Server(event.hostname, config.crawler_port, config.crawler_user, self.passphrase, self.key, config.timer);
+  subscriber.on('message', function (channel, event) {
+    event = JSON.parse(event);
+    var ev = {
+      type: 'plugins',
+      message: event.hostname + ' -> CSF operation failed.'
+    };
+    var ip = event.ip.trim().replace(/;/g, '');
+    ip = event.ip.trim().replace(/|/g, '');
 
-        server.on('ready', function () {
-          var selfs = this;
-          if(event.type == 'unlock') {
-            this.connectionPool.send('csf -g "' + ip + '"', function (err, data) {
-              if (data && data.toString('utf-8').indexOf('No matches found for ' + ip + ' in iptables') === -1) {
-                var aux = data.toString('utf-8');
-                aux = aux.trim().split('\n');
-                var motive = aux[aux.length - 1];
-                unlock(selfs, event);
-                ev.message = event.hostname + ' -> ' + motive;
-              } else {
-                ev.message = event.hostname + ' -> IP not blocked.';
-                server.disconnect();
-              }
-            });
-          } else if(event.type == 'lock') {
-            var reason = event.reason.trim().replace(/;/g, '');
-            this.connectionPool.send('csf -d ' + ip + ' ' + reason, function (err, data) {
-              ev.message = event.hostname + ' -> IP blocked.';
+    if(event.hostname) {
+      console.log(event);
+      var server = new Server(event.hostname, config.crawler_port, config.crawler_user, self.passphrase, self.key, config.timer);
+
+      server.on('ready', function () {
+        var selfs = this;
+        if(event.type == 'unlock') {
+          this.connectionPool.send('csf -g "' + ip + '"', function (err, data) {
+            if (data && data.toString('utf-8').indexOf('No matches found for ' + ip + ' in iptables') === -1) {
+              var aux = data.toString('utf-8');
+              aux = aux.trim().split('\n');
+              var motive = aux[aux.length - 1];
+              unlock(selfs, event);
+              ev.message = event.hostname + ' -> ' + motive;
+            } else {
+              ev.message = event.hostname + ' -> IP not blocked.';
               server.disconnect();
-            });
-          }
-        });
+            }
+          });
+        } else if(event.type == 'lock') {
+          var reason = event.reason.trim().replace(/;/g, '');
+          this.connectionPool.send('csf -d ' + ip + ' ' + reason, function (err, data) {
+            ev.message = event.hostname + ' -> IP blocked.';
+            server.disconnect();
+          });
+        }
+      });
 
-        server.on('closed', function(connected) {
-          vendors.mongopubsub.publish('events', ev);
-        });
+      server.on('closed', function(connected) {
+        vendors.redis.publisher.publish('events', JSON.stringify(ev));
+      });
 
-        server.connect();
-      } else {
-        vendors.mongopubsub.publish('events', ev);
-      }
-    });
+      server.connect();
+    } else {
+      vendors.redis.publisher.publish('events', JSON.stringify(ev));
+    }
   });
 };
 

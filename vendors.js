@@ -1,13 +1,12 @@
 var mongoClient = require('mongodb').MongoClient,
-  mubsub = require('mubsub'),
+  redis = require('redis'),
   config = require('./conf/config');
 
 var db = null;
 
 exports.mongo = function(cb){
   if(db){
-    cb(db);
-    return;
+    return cb(db);
   }
 
   mongoClient.connect('mongodb://' + config.mongo_host + ':' + config.mongo_port + '/' + config.mongo_database, function(err, conn) {
@@ -16,10 +15,11 @@ exports.mongo = function(cb){
       throw new Error(err);
     } else {
       db = conn;
-      var channel = mubsub(db).channel('pubsub');
-      channel.on('error', console.error);
-      exports.mongopubsub = channel;
-      cb(db);
+      return cb(db);
     }
   });
 };
+
+
+exports.redis = redis;
+exports.redis.publisher = redis.createClient();

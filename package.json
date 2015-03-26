@@ -1,15 +1,25 @@
 {
   "name": "outkept",
-  "version": "2.2.4",
+  "version": "2.2.5",
+  "description": "http//outke.pt",
+  "author": "Pedro Dias <petermdias@gmail.com>",
+  "maintainers": [
+    "apocas <petermdias@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/apocas/outkept.git"
+  },
   "dependencies": {
-    "ssh2": "0.3.x",
+    "ssh2": "0.4.x",
     "prompt": "0.2.x",
-    "process": "0.7.x",
-    "mongodb": "1.4.x",
-    "feedparser": "0.18.x",
-    "request": "2.39.x",
+    "process": "0.10.x",
+    "mongodb": "2.0.x",
+    "feedparser": "1.0.x",
+    "request": "2.54.x",
     "ssh2-multiplexer": "0.0.x",
-    "mubsub": "1.0.x",
+    "hiredis": "0.2.x",
+    "redis": "0.12.x",
     "async": "0.9.x",
     "gauss": "0.2.x"
   }
