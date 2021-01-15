@@ -1,4 +1,4 @@
-# Outkept - http://outke.pt
+# Outkept
 
 
 * The idea behind `Outkept` was to build a tool that could auto-discover your cluster profile and simultaneously start monitoring and controlling each server it finds.
